@@ -1,37 +1,29 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Light mode is default
-  document.getElementById("darkModeToggle").checked = false;
-
-  document.getElementById("darkModeToggle").addEventListener("change", function () {
-    document.body.classList.toggle("dark");
-  });
-});
-
 async function sendMessage() {
-  const userInput = document.getElementById("user-input").value.trim();
+  const userInput = document.getElementById("user-input").value;
   const chatBox = document.getElementById("chat-box");
   const subject = document.getElementById("subject").value;
   const level = document.getElementById("level").value;
 
-  if (!userInput) return;
+  if (!userInput.trim()) return;
 
-  // User message
+  // Show user message
   const userMessage = document.createElement("div");
   userMessage.className = "chat-message user";
-  userMessage.innerHTML = `<div class="chat-bubble">${userInput}</div>`;
+  userMessage.textContent = userInput;
   chatBox.appendChild(userMessage);
 
-  // Typing bot message
+  // Show typing...
   const botMessage = document.createElement("div");
   botMessage.className = "chat-message bot";
-  botMessage.innerHTML = `<div class="chat-bubble">TutorBot: Typing...</div>`;
+  botMessage.textContent = "TutorBot: Typing...";
   chatBox.appendChild(botMessage);
   chatBox.scrollTop = chatBox.scrollHeight;
 
+  // Prepare prompt
   const messages = [
     {
       role: "system",
-      content: `You are a helpful AI tutor for a ${level} level student learning ${subject}. Respond with clear, easy-to-understand bullet points. Avoid long paragraphs.`
+      content: `You are an AI tutor helping a ${level} level student understand topics in ${subject}. Be friendly, clear, and educational.`
     },
     {
       role: "user",
@@ -43,31 +35,31 @@ async function sendMessage() {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${OPENROUTER_API_KEY}`, // Add in config.js
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,  // ✅ Fixed
         "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost",
+        "HTTP-Referer": "http://localhost",  // ✅ Required for OpenRouter
         "X-Title": "Smart Tutor Chatbot"
       },
       body: JSON.stringify({
-        model: "mistralai/mistral-7b-instruct",
+        model: "meta-llama/llama-3-8b-instruct",  // ✅ Valid OpenRouter model ID
         messages: messages
       })
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
+      throw new Error(`HTTP ${response.status}: ${errorText}`);  // ✅ Fixed string interpolation
     }
 
     const result = await response.json();
-    const reply = result.choices?.[0]?.message?.content || "Sorry, I couldn't understand that.";
+    const reply = result.choices?.[0]?.message?.content;
 
-    botMessage.innerHTML = `<div class="chat-bubble">TutorBot: ${reply}</div>`;
-    chatBox.scrollTop = chatBox.scrollHeight;
+    botMessage.textContent = "TutorBot: " + (reply || "Sorry, I couldn't understand that.");
   } catch (error) {
+    botMessage.textContent = "TutorBot: Oops! Something went wrong.";
     console.error("❌ OpenRouter Error:", error.message);
-    botMessage.innerHTML = `<div class="chat-bubble">TutorBot: Oops! Something went wrong.</div>`;
   }
 
+  // Clear input
   document.getElementById("user-input").value = "";
 }
