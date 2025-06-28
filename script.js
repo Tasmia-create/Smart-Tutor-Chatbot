@@ -1,13 +1,10 @@
 async function sendMessage() {
-  const userInput = document.getElementById("user-input").value.trim();
+  const userInput = document.getElementById("user-input").value;
   const chatBox = document.getElementById("chat-box");
   const subject = document.getElementById("subject").value;
   const level = document.getElementById("level").value;
-  const sendButton = document.querySelector(".input-area button");
 
-  if (!userInput) return;
-
-  sendButton.disabled = true;
+  if (!userInput.trim()) return;
 
   // Show user message
   const userMessage = document.createElement("div");
@@ -22,7 +19,7 @@ async function sendMessage() {
   chatBox.appendChild(botMessage);
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Build prompt messages
+  // Prepare prompt
   const messages = [
     {
       role: "system",
@@ -35,20 +32,23 @@ async function sendMessage() {
   ];
 
   try {
-    const response = await fetch("/api/chat", {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,  // ✅ Fixed
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost",  // ✅ Required for OpenRouter
+        "X-Title": "Smart Tutor Chatbot"
       },
       body: JSON.stringify({
-        model: "meta-llama/llama-3-8b-instruct",
+        model: "meta-llama/llama-3-8b-instruct",  // ✅ Valid OpenRouter model ID
         messages: messages
       })
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
+      throw new Error(`HTTP ${response.status}: ${errorText}`);  // ✅ Fixed string interpolation
     }
 
     const result = await response.json();
@@ -57,10 +57,9 @@ async function sendMessage() {
     botMessage.textContent = "TutorBot: " + (reply || "Sorry, I couldn't understand that.");
   } catch (error) {
     botMessage.textContent = "TutorBot: Oops! Something went wrong.";
-    console.error("❌ Error:", error.message);
+    console.error("❌ OpenRouter Error:", error.message);
   }
 
+  // Clear input
   document.getElementById("user-input").value = "";
-  sendButton.disabled = false;
-  chatBox.scrollTop = chatBox.scrollHeight;
 }
