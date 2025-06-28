@@ -19,7 +19,7 @@ async function sendMessage() {
   chatBox.appendChild(botMessage);
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Prepare prompt
+  // Construct the messages
   const messages = [
     {
       role: "system",
@@ -35,20 +35,21 @@ async function sendMessage() {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,  // ✅ Fixed
+        // IMPORTANT: OPENROUTER_API_KEY must be defined in config.js (for local testing)
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost",  // ✅ Required for OpenRouter
+        "HTTP-Referer": "http://localhost", // Or your production domain
         "X-Title": "Smart Tutor Chatbot"
       },
       body: JSON.stringify({
-        model: "meta-llama/llama-3-8b-instruct",  // ✅ Valid OpenRouter model ID
+        model: "meta-llama/llama-3-8b-instruct",  // ✅ Valid OpenRouter Model
         messages: messages
       })
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errorText}`);  // ✅ Fixed string interpolation
+      throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
 
     const result = await response.json();
@@ -60,6 +61,5 @@ async function sendMessage() {
     console.error("❌ OpenRouter Error:", error.message);
   }
 
-  // Clear input
   document.getElementById("user-input").value = "";
 }
