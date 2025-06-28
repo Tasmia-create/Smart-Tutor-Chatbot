@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Tutor Chatbot</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="toggle-container">
+    <label class="toggle-label">Dark Mode</label>
+    <label class="switch">
+      <input type="checkbox" id="darkModeToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="container">
+    <h1>Smart Tutor Chatbot</h1>
+
+    <div class="settings-bar">
+      <label for="subject">Subject:</label>
+      <select id="subject">
+        <option value="Mathematics">Mathematics</option>
+        <option value="Science">Science</option>
+        <option value="History">History</option>
+        <option value="Geography">Geography</option>
+        <option value="English">English</option>
+      </select>
+
+      <label for="level">Level:</label>
+      <select id="level">
+        <option value="Easy">Easy</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Hard">Hard</option>
+      </select>
+    </div>
+
+    <div id="chat-box" class="chat-box"></div>
+
+    <div class="input-area">
+      <input id="user-input" type="text" placeholder="Ask a question...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+/* ==== Color Theme Variables ==== */
+:root {
+  --bg: #f7f9fc;
+  --text: #1a1a1a;
+  --card: #ffffff;
+  --bot-bg: #e1ecf4;
+  --user-bg: #d1e7dd;
+  --accent: #0077cc;
+  --border: #dcdcdc;
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #f0f0f0;
+  --card: #1e1e2f;
+  --bot-bg: #2c3e50;
+  --user-bg: #264653;
+  --accent: #4dabf7;
+  --border: #3a3a4d;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==== Header & Toggle ==== */
+.container {
+  max-width: 960px;
+  margin: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-container {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.toggle-label {
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 24px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+input:checked + .slider {
+  background-color: var(--accent);
+}
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* ==== Settings Bar ==== */
+.settings-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 24px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.settings-bar label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.settings-bar select {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background-color: #f9fafb;
+  color: var(--text);
+  transition: 0.3s ease;
+}
+
+body.dark .settings-bar select {
+  background-color: #2e2e3e;
+  color: #ffffff;
+  border: 1px solid var(--border);
+}
+
+.settings-bar select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+/* ==== Chat Area ==== */
+.chat-box {
+  flex-grow: 1;
+  background-color: var(--card);
+  padding: 16px;
+  border-radius: 12px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  min-height: 300px;
+  max-height: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  scroll-behavior: smooth;
+}
+
+.chat-message {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.chat-message.user {
+  align-items: flex-end;
+}
+
+.chat-bubble {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  background-color: var(--bot-bg);
+  color: var(--text);
+  transition: background-color 0.3s ease;
+}
+
+.chat-message.user .chat-bubble {
+  background-color: var(--user-bg);
+  color: #000;
+}
+
+/* ==== Input Area ==== */
+.input-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.input-area input[type="text"] {
+  flex-grow: 1;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  outline: none;
+  background-color: #ffffff;
+  color: #000;
+}
+
+body.dark .input-area input[type="text"] {
+  background-color: #2e2e3e;
+  color: #ffffff;
+}
+
+.input-area button {
+  padding: 14px 20px;
+  font-size: 16px;
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.input-area button:hover {
+  background-color: #005fa3;
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 768px) {
+  .chat-bubble {
+    max-width: 90%;
+  }
+
+  .settings-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-area {
+    flex-direction: column;
+  }
+
+  .input-area button {
+    width: 100%;
+  }
+}
