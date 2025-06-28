@@ -7,7 +7,6 @@ async function sendMessage() {
 
   if (!userInput) return;
 
-  // Disable input while processing
   sendButton.disabled = true;
 
   // Show user message
@@ -36,17 +35,10 @@ async function sendMessage() {
   ];
 
   try {
-    if (typeof OPENROUTER_API_KEY === "undefined" || !OPENROUTER_API_KEY) {
-      throw new Error("API key not defined. Please set OPENROUTER_API_KEY in config.js.");
-    }
-
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const response = await fetch("/api/chat", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost", // Update if hosted
-        "X-Title": "Smart Tutor Chatbot"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         model: "meta-llama/llama-3-8b-instruct",
@@ -65,7 +57,7 @@ async function sendMessage() {
     botMessage.textContent = "TutorBot: " + (reply || "Sorry, I couldn't understand that.");
   } catch (error) {
     botMessage.textContent = "TutorBot: Oops! Something went wrong.";
-    console.error("❌ OpenRouter Error:", error.message);
+    console.error("❌ Error:", error.message);
   }
 
   document.getElementById("user-input").value = "";
