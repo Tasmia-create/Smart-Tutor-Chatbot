@@ -1,10 +1,14 @@
 async function sendMessage() {
-  const userInput = document.getElementById("user-input").value;
+  const userInput = document.getElementById("user-input").value.trim();
   const chatBox = document.getElementById("chat-box");
   const subject = document.getElementById("subject").value;
   const level = document.getElementById("level").value;
+  const sendButton = document.querySelector(".input-area button");
 
-  if (!userInput.trim()) return;
+  if (!userInput) return;
+
+  // Disable input while processing
+  sendButton.disabled = true;
 
   // Show user message
   const userMessage = document.createElement("div");
@@ -19,7 +23,7 @@ async function sendMessage() {
   chatBox.appendChild(botMessage);
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Construct the messages
+  // Build prompt messages
   const messages = [
     {
       role: "system",
@@ -32,17 +36,20 @@ async function sendMessage() {
   ];
 
   try {
+    if (typeof OPENROUTER_API_KEY === "undefined" || !OPENROUTER_API_KEY) {
+      throw new Error("API key not defined. Please set OPENROUTER_API_KEY in config.js.");
+    }
+
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        // IMPORTANT: OPENROUTER_API_KEY must be defined in config.js (for local testing)
         "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost", // Or your production domain
+        "HTTP-Referer": "http://localhost", // Update if hosted
         "X-Title": "Smart Tutor Chatbot"
       },
       body: JSON.stringify({
-        model: "meta-llama/llama-3-8b-instruct",  // ✅ Valid OpenRouter Model
+        model: "meta-llama/llama-3-8b-instruct",
         messages: messages
       })
     });
@@ -62,4 +69,6 @@ async function sendMessage() {
   }
 
   document.getElementById("user-input").value = "";
+  sendButton.disabled = false;
+  chatBox.scrollTop = chatBox.scrollHeight;
 }

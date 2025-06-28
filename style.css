@@ -11,6 +11,7 @@ body {
   background-color: #f4f7fb;
   color: #333;
   padding: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Toggle Switch */
@@ -78,6 +79,7 @@ input:checked + .slider:before {
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease;
 }
 
 /* Title */
@@ -164,45 +166,46 @@ input:checked + .slider:before {
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
+  transition: background 0.3s ease;
 }
 
 .input-area button:hover {
   background: #0056b3;
 }
 
-/* Dark mode */
-body.dark {
+/* 🌙 Dark Mode Fix: Use "dark-mode" class instead of "dark" */
+body.dark-mode {
   background-color: #111827;
   color: #f4f4f4;
 }
 
-body.dark .container {
+body.dark-mode .container {
   background: #1f2937;
 }
 
-body.dark .chat-box {
+body.dark-mode .chat-box {
   background: #374151;
 }
 
-body.dark .chat-message.user {
+body.dark-mode .chat-message.user {
   background: #4ade80;
 }
 
-body.dark .chat-message.bot {
+body.dark-mode .chat-message.bot {
   background: #60a5fa;
 }
 
-body.dark input,
-body.dark select {
+body.dark-mode input,
+body.dark-mode select {
   background: #1f2937;
   color: white;
   border: 1px solid #444;
 }
 
-body.dark .input-area button {
+body.dark-mode .input-area button {
   background: #10b981;
 }
 
-body.dark .input-area button:hover {
+body.dark-mode .input-area button:hover {
   background: #059669;
 }

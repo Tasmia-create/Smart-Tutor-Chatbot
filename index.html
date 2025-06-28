@@ -47,8 +47,32 @@
     </div>
   </div>
 
-  <!-- JS files -->
+  <!-- Include your scripts -->
   <script src="config.js"></script>
   <script src="script.js"></script>
+
+  <!-- Dark Mode Toggle Logic -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggle = document.getElementById("darkModeToggle");
+      const body = document.body;
+
+      // Check local storage and apply mode
+      if (localStorage.getItem("darkMode") === "enabled") {
+        body.classList.add("dark-mode");
+        toggle.checked = true;
+      }
+
+      toggle.addEventListener("change", function () {
+        if (toggle.checked) {
+          body.classList.add("dark-mode");
+          localStorage.setItem("darkMode", "enabled");
+        } else {
+          body.classList.remove("dark-mode");
+          localStorage.setItem("darkMode", "disabled");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
